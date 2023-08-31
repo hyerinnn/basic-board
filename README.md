@@ -1,2 +1,2 @@
 # basic-board
-hr
+hr!
