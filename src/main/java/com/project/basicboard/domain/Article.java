@@ -22,10 +22,9 @@ import java.util.Set;
         @Index(columnList = "createAt"),
         @Index(columnList = "createBy")
 })
-@EntityListeners(AuditingEntityListener.class)
 @Entity
 //@EqualsAndHashCode
-public class Article {
+public class Article extends AuditingFields {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,10 +69,13 @@ public class Article {
 
 
 
+
+
+
+
     // 모든 JAP 엔티티들은 기본 생성자가 필요함
     protected Article() {
     }
-
 
     private Article(String title, String content, String hashtag) {
         this.title = title;
@@ -85,7 +87,6 @@ public class Article {
     public static Article of(String title, String content, String hashtag) {
         return new Article(title, content, hashtag);
     }
-
 
 
     // 동일성, 동등성 검사용도
@@ -105,3 +106,4 @@ public class Article {
         return Objects.hash(id);
     }
 }
+
