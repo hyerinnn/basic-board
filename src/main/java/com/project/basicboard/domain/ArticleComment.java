@@ -17,10 +17,9 @@ import java.util.Objects;
         @Index(columnList = "createAt"),
         @Index(columnList = "createBy")
 })
-@EntityListeners(AuditingEntityListener.class)
 @Entity
 //@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ArticleComment {
+public class ArticleComment  extends AuditingFields{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,22 +34,6 @@ public class ArticleComment {
     private String content;     //내용
 
 
-
-    @CreatedDate
-    @Column(nullable = false)
-    private LocalDateTime createAt;     //생성일
-
-    @CreatedBy
-    @Column(nullable = false, length = 100)
-    private String createBy;            //생성자
-
-    @CreatedDate
-    @Column(nullable = false)
-    private LocalDateTime modifiedAt;   //수정일
-
-    @CreatedBy
-    @Column(nullable = false, length = 100)
-    private String modifiedBy;          //수정자
 
 
     // 룸북의 NoArgsConstructor 애노테이션 사용하면 이거 필요없음
