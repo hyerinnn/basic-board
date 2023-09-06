@@ -1,0 +1,20 @@
+package com.project.basicboard.config;
+
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+import java.util.Optional;
+
+@EnableJpaAuditing
+@Configuration
+public class JpaConfig {
+
+
+    @Bean
+    public AuditorAware<String> auditorAware(){
+        return () -> Optional.of("hyerin");  // TODO : 실제 작성자로 변경하기 (스프링 시큐리티로 인증 기능 붙일 때 수정예정)
+    }
+}
