@@ -48,6 +48,7 @@ public class Article extends AuditingFields {
     @ToString.Exclude
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
+/*
 
 
     // CreatedDate/CreatedBy  -> EnableJpaAuditing : jpa auditing 기능
@@ -69,6 +70,7 @@ public class Article extends AuditingFields {
 
 
 
+*/
 
 
 
