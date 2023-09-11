@@ -17,7 +17,9 @@ import java.util.List;
 public interface ArticleCommentRepository extends
         JpaRepository<ArticleComment, Long>,
         QuerydslPredicateExecutor<Article>
-        , QuerydslBinderCustomizer<QArticle> {
+        , QuerydslBinderCustomizer<QArticle>
+{
+
 
 
     // _ 역할 (스프링 data jpa 공식문서에도 나옴)
@@ -29,10 +31,10 @@ public interface ArticleCommentRepository extends
     default void customize(QuerydslBindings bindings, QArticle root){
         //선택적 검색을 위함
         bindings.excludeUnlistedProperties(true);
-        bindings.including(root.content,root.createAt, root.createBy);
+        bindings.including(root.content,root.createdAt, root.createdBy);
         bindings.bind(root.content).first(StringExpression::containsIgnoreCase);
-        bindings.bind(root.createAt).first(DateTimeExpression::eq);
-        bindings.bind(root.createBy).first(StringExpression::containsIgnoreCase);
+        bindings.bind(root.createdAt).first(DateTimeExpression::eq);
+        bindings.bind(root.createdBy).first(StringExpression::containsIgnoreCase);
 
     }
 

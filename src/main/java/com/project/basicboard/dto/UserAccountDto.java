@@ -28,8 +28,8 @@ public record UserAccountDto(
                 entity.getEmail(),
                 entity.getNickname(),
                 entity.getMemo(),
-                entity.getCreateAt(),
-                entity.getCreateBy(),
+                entity.getCreatedAt(),
+                entity.getCreatedBy(),
                 entity.getModifiedAt(),
                 entity.getModifiedBy()
         );

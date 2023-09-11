@@ -26,8 +26,8 @@ public record ArticleCommentDto(
                 entity.getArticle().getId(),
                 UserAccountDto.from(entity.getUserAccount()),
                 entity.getContent(),
-                entity.getCreateAt(),
-                entity.getCreateBy(),
+                entity.getCreatedAt(),
+                entity.getCreatedBy(),
                 entity.getModifiedAt(),
                 entity.getModifiedBy()
         );

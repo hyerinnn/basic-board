@@ -19,8 +19,8 @@ import java.util.Set;
 @Table(indexes = {
         @Index(columnList = "title"),
         @Index(columnList = "hashtag"),
-        @Index(columnList = "createAt"),
-        @Index(columnList = "createBy")
+        @Index(columnList = "createdAt"),
+        @Index(columnList = "createdBy")
 })
 @Entity
 //@EqualsAndHashCode
@@ -46,7 +46,7 @@ public class Article extends AuditingFields {
     // 이 article에 연동되어 있는 댓글은 중복을 허용하지 않고 다 모아서 컬렉션 리스트로 보겠다.
     // 실 운영에서 casecade는 안하기도 함(게시글은 사라져도 댓글은 가지고 있고 싶을 수 있으므로.)
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
-    @OrderBy("createAt DESC")
+    @OrderBy("createdAt DESC")
     @ToString.Exclude
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 

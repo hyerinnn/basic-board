@@ -14,8 +14,8 @@ import java.util.Objects;
 @ToString(callSuper = true)
 @Table(indexes = {
         @Index(columnList = "content"),
-        @Index(columnList = "createAt"),
-        @Index(columnList = "createBy")
+        @Index(columnList = "createdAt"),
+        @Index(columnList = "createdBy")
 })
 @Entity
 //@NoArgsConstructor(access = AccessLevel.PROTECTED)
