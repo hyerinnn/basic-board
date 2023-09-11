@@ -37,6 +37,7 @@ public record ArticleDto(
     }
 
     // 위와 반대.
+    // dto로 부터 새로 엔티티를 만든다.
     public Article toEntity() {
         return Article.of(
                 userAccountDto.toEntity(),

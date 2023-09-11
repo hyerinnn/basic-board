@@ -29,6 +29,7 @@ public record ArticleWithCommentsDto(
                 UserAccountDto.from(entity.getUserAccount()),
                 entity.getArticleComments().stream()
                         .map(ArticleCommentDto::from)
+                        // 순서보장을 위한 LinkedHashSet
                         .collect(Collectors.toCollection(LinkedHashSet::new)),
                 entity.getTitle(),
                 entity.getContent(),
