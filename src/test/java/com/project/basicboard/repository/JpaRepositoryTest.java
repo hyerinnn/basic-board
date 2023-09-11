@@ -2,6 +2,7 @@ package com.project.basicboard.repository;
 
 import com.project.basicboard.config.JpaConfig;
 import com.project.basicboard.domain.Article;
+import com.project.basicboard.domain.UserAccount;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,25 +23,31 @@ class JpaRepositoryTest {
 
     private final ArticleRepository articleRepository;
     private final ArticleCommentRepository articleCommentRepository;
+    private final UserAccountRepository userAccountRepository;
+
 
 
     JpaRepositoryTest(
             @Autowired ArticleRepository articleRepository,
-            @Autowired ArticleCommentRepository articleCommentRepository) {
+            @Autowired ArticleCommentRepository articleCommentRepository,
+            @Autowired UserAccountRepository userAccountRepository
+    ) {
         this.articleRepository = articleRepository;
         this.articleCommentRepository = articleCommentRepository;
+        this.userAccountRepository = userAccountRepository;
+
     }
 
     @DisplayName("select 테스트")
     @Test
-    void givenTestData_whenSelecting_thenWorksFine(){
-        //given
-
-        //when
-        List<Article> articles =  articleRepository.findAll();
-
-        //then
-        assertThat(articles).isNotNull().hasSize(123);
+    void givenTestData_whenSelecting_thenWorksFine() {
+        // Given
+        // When
+        List<Article> articles = articleRepository.findAll();
+        // Then
+        assertThat(articles)
+                .isNotNull()
+                .hasSize(123);
     }
 
 
@@ -49,9 +56,12 @@ class JpaRepositoryTest {
     void givenTestData_whenInserting_thenWorksFine(){
         //given
         long previousCount = articleRepository.count();
+        UserAccount userAccount = userAccountRepository.save(UserAccount.of("uno", "pw", null, null, null));
+        Article article = Article.of(userAccount, "new article", "new content", "#spring");
 
         //when
-        Article savedArticle = articleRepository.save(Article.of("새글", "내용내용", "#spring"));
+        //Article savedArticle = articleRepository.save(Article.of("새글", "내용내용", "#spring"));
+        articleRepository.save(article);
 
         //then
         assertThat(

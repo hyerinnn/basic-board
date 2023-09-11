@@ -15,12 +15,12 @@ import java.util.Objects;
 import java.util.Set;
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @Table(indexes = {
         @Index(columnList = "title"),
         @Index(columnList = "hashtag"),
-        @Index(columnList = "createAt"),
-        @Index(columnList = "createBy")
+        @Index(columnList = "createdAt"),
+        @Index(columnList = "createdBy")
 })
 @Entity
 //@EqualsAndHashCode
@@ -29,6 +29,8 @@ public class Article extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Setter @ManyToOne(optional = false) private UserAccount userAccount; // 유저 정보 (ID)
 
     @Setter
     @Column(nullable = false)
@@ -44,12 +46,11 @@ public class Article extends AuditingFields {
     // 이 article에 연동되어 있는 댓글은 중복을 허용하지 않고 다 모아서 컬렉션 리스트로 보겠다.
     // 실 운영에서 casecade는 안하기도 함(게시글은 사라져도 댓글은 가지고 있고 싶을 수 있으므로.)
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
-    @OrderBy("id")
+    @OrderBy("createdAt DESC")
     @ToString.Exclude
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
-
-
+/*
     // CreatedDate/CreatedBy  -> EnableJpaAuditing : jpa auditing 기능
     @CreatedDate
     @Column(nullable = false)
@@ -66,9 +67,7 @@ public class Article extends AuditingFields {
     @CreatedBy
     @Column(nullable = false, length = 100)
     private String modifiedBy;          //수정자
-
-
-
+*/
 
 
 
@@ -77,15 +76,16 @@ public class Article extends AuditingFields {
     protected Article() {
     }
 
-    private Article(String title, String content, String hashtag) {
+    private Article(UserAccount userAccount, String title, String content, String hashtag) {
+        this.userAccount = userAccount;
         this.title = title;
         this.content = content;
         this.hashtag = hashtag;
     }
 
     // new 키워드를 쓰지 않고 쓸수있게.  도메인 article을 생성할땐 어떤 값을 필요로 하는지 이걸로 가이드 함.
-    public static Article of(String title, String content, String hashtag) {
-        return new Article(title, content, hashtag);
+    public static Article of(UserAccount userAccount, String title, String content, String hashtag) {
+        return new Article(userAccount, title, content, hashtag);
     }
 
 

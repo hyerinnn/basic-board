@@ -22,11 +22,11 @@ public class AuditingFields {
     // CreatedDate/CreatedBy  -> EnableJpaAuditing : jpa auditing 기능
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createAt;     //생성일
+    private LocalDateTime createdAt;     //생성일
 
     @CreatedBy
     @Column(nullable = false, updatable = false, length = 100)
-    private String createBy;            //생성자
+    private String createdBy;            //생성자
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @CreatedDate
