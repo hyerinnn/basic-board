@@ -1,4 +1,4 @@
-package com.project.basicboard.domain.eum;
+package com.project.basicboard.domain.constant;
 
 import lombok.Getter;
 

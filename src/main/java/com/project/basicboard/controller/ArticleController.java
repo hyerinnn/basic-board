@@ -1,8 +1,11 @@
 package com.project.basicboard.controller;
 
-import com.project.basicboard.domain.eum.SearchType;
+import com.project.basicboard.domain.constant.FormStatus;
+import com.project.basicboard.domain.constant.SearchType;
+import com.project.basicboard.dto.UserAccountDto;
+import com.project.basicboard.dto.request.ArticleRequest;
 import com.project.basicboard.dto.response.ArticleResponse;
-import com.project.basicboard.dto.response.ArticleWithCommentResponse;
+import com.project.basicboard.dto.response.ArticleWithCommentsResponse;
 import com.project.basicboard.service.ArticleService;
 import com.project.basicboard.service.PaginationService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +18,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Locale;
 
 @RequiredArgsConstructor
 @RequestMapping("/articles")
@@ -46,16 +48,15 @@ public class ArticleController {
     @GetMapping("/{articleId}")
     public String article(@PathVariable Long articleId,ModelMap map){
 
-        ArticleWithCommentResponse article = ArticleWithCommentResponse.from(articleService.getArticle(articleId));
-        map.addAttribute("article", article);
-        map.addAttribute("articleComments", article.articleCommentResponses());
+        ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(articleService.getArticleWithComments(articleId));        map.addAttribute("article", article);
+        map.addAttribute("articleComments", article.articleCommentsResponse());
         map.addAttribute("totalCount", articleService.getArticleCount());
 
         return "articles/detail";
     }
 
     @GetMapping("/search-hashtag")
-    public String searchHashtag(
+    public String searchArticleHashtag(
             @RequestParam(required = false) String searchValue,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             ModelMap map
@@ -71,7 +72,7 @@ public class ArticleController {
 
         return "articles/search-hashtag";
     }
-/*
+
     @GetMapping("/form")
     public String articleForm(ModelMap map) {
         map.addAttribute("formStatus", FormStatus.CREATE);
@@ -115,5 +116,5 @@ public class ArticleController {
         articleService.deleteArticle(articleId);
 
         return "redirect:/articles";
-    }*/
+    }
 }
