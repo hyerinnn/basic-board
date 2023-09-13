@@ -2,7 +2,7 @@ package com.project.basicboard.dto;
 
 import com.project.basicboard.domain.Article;
 import com.project.basicboard.domain.ArticleComment;
-import com.project.basicboard.dto.UserAccountDto;
+import com.project.basicboard.domain.UserAccount;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +16,12 @@ public record ArticleCommentDto(
         LocalDateTime modifiedAt,
         String modifiedBy
 ) {
+
+    public static ArticleCommentDto of(Long articleId, UserAccountDto userAccountDto, String content) {
+        return new ArticleCommentDto(null, articleId, userAccountDto, content, null, null, null, null);
+    }
+
+
     public static ArticleCommentDto of(Long id, Long articleId, UserAccountDto userAccountDto, String content, LocalDateTime createdAt, String createdBy, LocalDateTime modifiedAt, String modifiedBy) {
         return new ArticleCommentDto(id, articleId, userAccountDto, content, createdAt, createdBy, modifiedAt, modifiedBy);
     }
@@ -33,10 +39,10 @@ public record ArticleCommentDto(
         );
     }
 
-    public ArticleComment toEntity(Article entity) {
+    public ArticleComment toEntity(Article entity, UserAccount userAccount) {
         return ArticleComment.of(
                 entity,
-                userAccountDto.toEntity(),
+                userAccount,
                 content
         );
     }
