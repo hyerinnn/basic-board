@@ -1,7 +1,6 @@
 package com.project.basicboard.domain;
 
-import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

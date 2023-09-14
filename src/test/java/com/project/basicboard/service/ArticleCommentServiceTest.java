@@ -8,7 +8,6 @@ import com.project.basicboard.dto.UserAccountDto;
 import com.project.basicboard.repository.ArticleCommentRepository;
 import com.project.basicboard.repository.ArticleRepository;
 import com.project.basicboard.repository.UserAccountRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 

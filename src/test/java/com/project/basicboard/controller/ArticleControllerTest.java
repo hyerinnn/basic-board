@@ -1,6 +1,7 @@
 package com.project.basicboard.controller;
 
 import com.project.basicboard.config.SecurityConfig;
+import com.project.basicboard.config.TestSecurityConfig;
 import com.project.basicboard.domain.constant.FormStatus;
 import com.project.basicboard.domain.constant.SearchType;
 import com.project.basicboard.dto.ArticleDto;
@@ -39,7 +40,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("View 컨트롤러 - 게시글")
-@Import({SecurityConfig.class, FormDataEncoder.class})
+//@Import({SecurityConfig.class, FormDataEncoder.class})
+@Import({TestSecurityConfig.class, FormDataEncoder.class})
 @WebMvcTest(ArticleController.class)
 class ArticleControllerTest {
 
