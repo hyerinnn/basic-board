@@ -94,10 +94,13 @@ public class Article extends AuditingFields {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Article article)) return false;
+/*        if (!(o instanceof Article article)) return false;
+        return id != null && id.equals(article.id);
+*/
         // id가 당연히 not null 이라고 보고 id.equals를 함 ->
         // id도 null일 수도 있으니(db에 아직 들어가지 않았을때(영속화 되지않은 경우)) 를 체크해주기 위해 null체크.
-        return id != null && id.equals(article.id);
+        if (!(o instanceof Article that)) return false;
+        return id != null && id.equals(that.getId());
     }
 
     @Override

@@ -140,6 +140,7 @@ class ArticleServiceTest {
         then(articleRepository).should().findById(articleId);
     }
 
+
     @DisplayName("댓글 달린 게시글이 없으면, 예외를 던진다.")
     @Test
     void givenNonexistentArticleId_whenSearchingArticleWithComments_thenThrowsException() {
@@ -153,7 +154,7 @@ class ArticleServiceTest {
         // Then
         assertThat(t)
                 .isInstanceOf(EntityNotFoundException.class)
-                .hasMessage("게시글이 없습니다 - articleId: " + articleId);
+                .hasMessage("게시글이 없습니다 -> articleId: " + articleId);
         then(articleRepository).should().findById(articleId);
     }
 
@@ -185,6 +186,7 @@ class ArticleServiceTest {
         Long articleId = 0L;
         given(articleRepository.findById(articleId)).willReturn(Optional.empty());
 
+        // When
         Throwable t = catchThrowable(() -> sut.getArticle(articleId));
 
         // Then
@@ -193,6 +195,11 @@ class ArticleServiceTest {
                 .hasMessage("게시글이 없습니다 -> articleId: " + articleId);
         then(articleRepository).should().findById(articleId);
     }
+
+
+
+
+
 
     @DisplayName("게시글 정보를 입력하면, 게시글을 생성한다.")
     @Test

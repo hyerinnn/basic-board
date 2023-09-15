@@ -1,16 +1,19 @@
 package com.project.basicboard.controller;
 
 import com.project.basicboard.config.SecurityConfig;
+import com.project.basicboard.config.TestSecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Import(SecurityConfig.class)
+//@Import(SecurityConfig.class)
+@Import(TestSecurityConfig.class)
 @WebMvcTest(MainController.class)
 class MainControllerTest {
 
@@ -20,12 +23,16 @@ class MainControllerTest {
         this.mvc = mvc;
     }
 
-
     @Test
-    void givenNothing_whenRequestRootPage_thenRedirectToArticlesPage() throws Exception {
+    void givenNothing_whenRequestingRootPage_thenRedirectsToArticlesPage() throws Exception {
+        // Given
 
-        //when, then
-         mvc.perform(get("/"))
-                 .andExpect(status().is3xxRedirection());
+        // When & Then
+        mvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("forward:/articles"))
+                .andExpect(forwardedUrl("/articles"))
+                .andDo(MockMvcResultHandlers.print());
     }
+
 }
