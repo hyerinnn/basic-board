@@ -8,7 +8,7 @@ insert into user_account (user_id, user_password, nickname, email, memo, created
 ;
 
 insert into user_account (user_id, user_password, nickname, email, memo, created_at, created_by, modified_at, modified_by) values
-    ('hr', '{noop}1111', 'hyerin', 'hr@mail.com', 'hihihihihihihihi.', now(), 'hr', now(), 'hr')
+    ('hr', '{noop}0000', 'hyerinnnn', 'hr@mail.com', 'hihihihihihihihi.', now(), 'hr', now(), 'hr')
 ;
 
 -- 123 게시글

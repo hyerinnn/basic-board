@@ -2,6 +2,8 @@
 <thlogic>
     <attr sel="#home" th:href="@{/}" />
     <attr sel="#hashtag" th:href="@{/articles/search-hashtag}" />
+
+    <!--sec : thymeleaf의 시큐리티관련 태그-->
     <attr sel="#username" sec:authorize="isAuthenticated()" sec:authentication="principal.nickname" />
     <attr sel="#login" sec:authorize="!isAuthenticated()" th:href="@{/login}" />
 <!--
