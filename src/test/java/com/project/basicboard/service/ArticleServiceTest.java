@@ -8,7 +8,6 @@ import com.project.basicboard.dto.ArticleWithCommentsDto;
 import com.project.basicboard.dto.UserAccountDto;
 import com.project.basicboard.repository.ArticleRepository;
 import com.project.basicboard.repository.UserAccountRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -140,6 +140,7 @@ class ArticleServiceTest {
         then(articleRepository).should().findById(articleId);
     }
 
+
     @DisplayName("댓글 달린 게시글이 없으면, 예외를 던진다.")
     @Test
     void givenNonexistentArticleId_whenSearchingArticleWithComments_thenThrowsException() {
@@ -153,7 +154,7 @@ class ArticleServiceTest {
         // Then
         assertThat(t)
                 .isInstanceOf(EntityNotFoundException.class)
-                .hasMessage("게시글이 없습니다 - articleId: " + articleId);
+                .hasMessage("게시글이 없습니다 -> articleId: " + articleId);
         then(articleRepository).should().findById(articleId);
     }
 
@@ -185,6 +186,7 @@ class ArticleServiceTest {
         Long articleId = 0L;
         given(articleRepository.findById(articleId)).willReturn(Optional.empty());
 
+        // When
         Throwable t = catchThrowable(() -> sut.getArticle(articleId));
 
         // Then
@@ -193,6 +195,11 @@ class ArticleServiceTest {
                 .hasMessage("게시글이 없습니다 -> articleId: " + articleId);
         then(articleRepository).should().findById(articleId);
     }
+
+
+
+
+
 
     @DisplayName("게시글 정보를 입력하면, 게시글을 생성한다.")
     @Test
@@ -219,6 +226,7 @@ class ArticleServiceTest {
         Article article = createArticle();
         ArticleDto dto = createArticleDto("새 타이틀", "새 내용", "#springboot");
         given(articleRepository.getReferenceById(dto.id())).willReturn(article);
+        given(userAccountRepository.getReferenceById(dto.userAccountDto().userId())).willReturn(dto.userAccountDto().toEntity());
 
         //when
         //sut.updateArticle(1L, ArticleUpdateDto.of("title",  "content",  "#java"));
@@ -230,6 +238,7 @@ class ArticleServiceTest {
                 .hasFieldOrPropertyWithValue("content", dto.content())
                 .hasFieldOrPropertyWithValue("hashtag", dto.hashtag());
         then(articleRepository).should().getReferenceById(dto.id());
+        then(userAccountRepository).should().getReferenceById(dto.userAccountDto().userId());
     }
 
 
@@ -254,13 +263,14 @@ class ArticleServiceTest {
     void givenArticleId_whenDeletingArticle_thenDeletesArticle() {
         // Given
         Long articleId = 1L;
-        willDoNothing().given(articleRepository).deleteById(articleId);
+        String userId = "uno";
+        willDoNothing().given(articleRepository).deleteByIdAndUserAccount_UserId(articleId, userId);
 
         // When
-        sut.deleteArticle(1L);
+        sut.deleteArticle(1L, userId);
 
         // Then
-        then(articleRepository).should().deleteById(articleId);
+        then(articleRepository).should().deleteByIdAndUserAccount_UserId(articleId, userId);
     }
 
 

@@ -1,10 +1,10 @@
 package com.project.basicboard.domain;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
@@ -44,8 +44,8 @@ public class UserAccount extends AuditingFields {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UserAccount userAccount)) return false;
-        return userId != null && userId.equals(userAccount.userId);
+        if (!(o instanceof UserAccount that)) return false;
+        return userId != null && userId.equals(that.getUserId());
     }
 
     @Override

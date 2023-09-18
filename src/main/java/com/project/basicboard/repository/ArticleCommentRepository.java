@@ -26,6 +26,7 @@ public interface ArticleCommentRepository extends
     //게시글로 댓글을 추출해야 하는 경우
     // find에서 _를 쓰면,  Article의 id를 조회하겠다는 의미.
     List<ArticleComment> findByArticle_Id(Long articleId);
+    void deleteByIdAndUserAccount_UserId(Long articleCommentId, String userId);
 
     @Override
     default void customize(QuerydslBindings bindings, QArticle root){

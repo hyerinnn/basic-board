@@ -7,7 +7,6 @@ import com.project.basicboard.dto.ArticleDto;
 import com.project.basicboard.dto.ArticleWithCommentsDto;
 import com.project.basicboard.repository.ArticleRepository;
 import com.project.basicboard.repository.UserAccountRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -15,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Slf4j
@@ -59,7 +59,7 @@ public class ArticleService {
     public ArticleDto getArticle(Long articleId) {
         return articleRepository.findById(articleId)
                 .map(ArticleDto::from)
-                .orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다 - articleId: " + articleId));
+                .orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다 -> articleId: " + articleId));
     }
 
 
@@ -73,7 +73,7 @@ public class ArticleService {
 
         /**
          * [getReferenceById  vs  findById]
-         * update할때 업데이트 할 게시물의 id를 알고 있는 경우, 수정후 저장하는 마지막 쿼리만 날리면 효율적.
+         * update할 때 업데이트 할 게시물의 id를 알고 있는 경우, 수정후 저장하는 마지막 쿼리만 날리면 효율적.
          *
          * 수정할 엔티티를 findById로 영속성컨텍스트에서 가져와야하는데 여기서 셀렉트 쿼리가 발생한다. 이때 셀렉트 쿼리를 발생시키지 않으면 좋겠다 해서
          * 나온 게  getReferenceById 이다.
@@ -82,19 +82,22 @@ public class ArticleService {
 
         try {
             Article article = articleRepository.getReferenceById(articleId);
-
-            if(dto.title() != null ){
-                article.setTitle(dto.title());
-            }
-            if(dto.content() != null ){
-                article.setContent(dto.content());
-            }
+            if (dto.title() != null) { article.setTitle(dto.title()); }
+            if (dto.content() != null) { article.setContent(dto.content()); }
             article.setHashtag(dto.hashtag());
+            UserAccount userAccount = userAccountRepository.getReferenceById(dto.userAccountDto().userId());
 
+            //게시글의 유저와 인증된 사용자가 동일한지 검사
+            if (article.getUserAccount().equals(userAccount)) {
+                if (dto.title() != null) { article.setTitle(dto.title()); }
+                if (dto.content() != null) { article.setContent(dto.content()); }
+                article.setHashtag(dto.hashtag());
+            }
             // 변경된 것을 감지해서 수정하므로 save 굳이 쓸 필요 없음!!!!
 
-        }catch (EntityNotFoundException e){
-            log.warn("게시글 업데이트 실패 -> 게시글을 찾을 수 없음 - dto: {}", dto);
+
+        } catch (EntityNotFoundException e) {
+            log.warn("게시글 업데이트 실패. 게시글을 수정하는데 필요한 정보를 찾을 수 없습니다 - {}", e.getLocalizedMessage());
         }
 
         /**
@@ -105,9 +108,9 @@ public class ArticleService {
 
     }
 
-    public void deleteArticle(long articleId) {
+    public void deleteArticle(long articleId, String userId) {
 
-        articleRepository.deleteById(articleId);
+        articleRepository.deleteByIdAndUserAccount_UserId(articleId, userId);
     }
 
     public long getArticleCount() {
